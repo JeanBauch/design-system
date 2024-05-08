@@ -2,27 +2,27 @@ name: Deploy docs
 
 on:
   push:
-      branches:
-          - main
+    branches:
+      - main
 
 jobs:
   build-and-deploy:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-              node-version: 20.13
-        
-        - run: npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.13
 
-        - run: npm run build
+      - run: npm ci
 
-        - name: Deploy storybook
-          working-directory: ./packages/docs
-          run: npm run deploy-storybook -- --ci --exiting-output-dir=storybook-static
-          env:
-            GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
+      - run: npm run build
+
+      - name: Deploy storybook
+        working-directory: ./packages/docs
+        run: npm run deploy-storybook -- --ci --existing-output-dir=storybook-static
+        env:
+          GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
